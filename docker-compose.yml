@@ -95,25 +95,15 @@ services:
       args:
         - ELK_VERSION=${ELK_VERSION}
     volumes:
-      - elasticsearch:/usr/share/elasticsearch/data
+      - type: volume
+        source: elasticsearch
+        target: /usr/share/elasticsearch/data
     environment:
-      - cluster.name=bitrix-cluster
-      - node.name=bitrix-node
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
-      - cluster.initial_master_nodes=bitrix-node
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
+      ES_JAVA_OPTS: "-Xmx2g -Xms2g"
+      ELASTIC_PASSWORD: 4i2BL8x79Jd7FUJm
+      discovery.type: single-node
     ports:
       - "9200:9200"
-      - "9300:9300"
-    depends_on:
-      - php-fpm
     networks:
       - backend
 
